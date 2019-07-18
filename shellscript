@@ -1,0 +1,36 @@
+if [ $# -le 0 ]
+
+then
+	
+	echo "No Parameters passed to script"
+
+	exit 1
+
+else
+	
+	echo $1 | grep "[0-9][0-9][0-9].[0-9].[0-9].[0-9]"
+	
+	if [ $? -ne 0 ]
+	
+	then
+		
+		echo "Passed parameter is not valid address"
+
+		exit 1
+	
+	fi
+fi
+
+IFS=$'\n'
+
+for service in `service --status-all | grep -i " is " | grep -vi "is running"`
+
+do
+	
+	servicename=`echo $service | awk -F" " '{print $1} `
+
+	status=`echo $service | awk -F" " '{print $NF} `
+	
+	echo "The service $servicename is $status"
+
+done
